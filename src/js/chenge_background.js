@@ -11,13 +11,24 @@ const btnStart = document.querySelector('[data-action="start"]');
 const btnStop = document.querySelector('[data-action="stop"]');
 let timerId = null;
 
+
+
+function startHendler() {
+  timerId = setInterval(chengeBackground, 1000);
+  //Можно вместо установки слушателя отключить кнопку
+  // btnStart.disabled = true; 
+  btnStart.removeEventListener('click', startHendler);
+}
+
 function chengeBackground() {
   body.style = `background-color: ${colors[randomIntegerFromInterval(0, colors.length - 1)]}`;
 }
 
 function stopHandler() {
   clearInterval(timerId);
-  btnStart.disabled = false;
+  // btnStart.disabled = false;
+  btnStart.addEventListener('click', startHendler);
+
 }
 
 const randomIntegerFromInterval = (min, max) => {
@@ -25,9 +36,6 @@ const randomIntegerFromInterval = (min, max) => {
 };
 
 // Слушатели
-btnStart.addEventListener('click', () => {
-  timerId = setInterval(chengeBackground, 1000);
-  btnStart.disabled = true; 
-});
+btnStart.addEventListener('click', startHendler);
 btnStop.addEventListener('click', stopHandler);
 
